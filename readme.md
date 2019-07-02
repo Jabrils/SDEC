@@ -14,6 +14,9 @@
 |A Dataset|Now I have a faux dataset located @[legacy/hadouken_data_test](legacy/hadouken_data_test), there are a few models in there as well if you want to try that out, but you could also supply your own dataset.
 |Neural Network Architecture|SDEC is simply a sequence encoder, you will still need to optimize your own Neural Network architectures. You can modify this in the script [train.py](train.py) line 60
 
+## How to install Dependencies:
+    pip install -r requirements.txt
+    
 ## How to encode a Dataset:
 
 - SDEC is made to work with sequences only
@@ -108,3 +111,4 @@ optional arguments:
 |---|---
 |Discover Hidden Codes|Consider you have a sequence that contains hidden codes within it, SDEC can be used to decipher those hidden codes, so long as the code has some sort of sequential dependency.
 |Classify Sequences (only binary for now)|SDEC can be used to classify sequences.
+|Encoder|Can use as encoder step for other networks like Autoencoder, SDEC to latent space, decoded to whatever
