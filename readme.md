@@ -1,5 +1,5 @@
 # Sequence-Domain Encompassed Correlations (SDEC)
-## Official Repo v0.1.0
+## Official Repo v0.1.1
 
 ## Notes
 - Yo! sorry this is currently a mess. SDEC was created in response to a challenge from @MarkRober to figure out some sequential steal encodings. I was really just running & gunning under a deadline so a lot of code here is ugly & confusing, but ill be updating this rep from here on out.

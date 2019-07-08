@@ -85,6 +85,9 @@ def GetResInps(res, el):
     ttt = ""
     app = []
 
+    # We need to add our unknown element, something that shouldn't be used in most datasets. NULL character of 0 should do fine :D
+    el.append(chr(0))
+
     while resLoc <= res[1]:
         # This will add every element to every element in the domain, creating every possible correlation with a resolution of 2 
         if resLoc == 1:
@@ -166,6 +169,7 @@ def CreateCounter(dic):
     return counter
 
 def GetSeqCount(seq, seqDictionary, resolution, squash, bare):
+    import math
     '''
     Sequence Domain Dictionary
     '''
@@ -209,9 +213,10 @@ def GetSeqCount(seq, seqDictionary, resolution, squash, bare):
         for t in corr:
             grab[t]+=1
 
-        # We want to squash all values in the counter to be within 0 & 1
-        for g in grab:
-            grab[g] = sigmoid(grab[g]) if squash else grab[g]
+        # We want to squash all values in the counter to be within 0 & 1 OR -1 & 1 depending if activation is used
+        if squash != None:
+            for g in grab:
+                grab[g] = sigmoid(grab[g]) if squash == 'sigmoid' else math.tanh(grab[g])
 
         return list(grab.values()) if bare else grab
     except:

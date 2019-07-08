@@ -49,7 +49,7 @@ def train(dataPath, the_file, modelsDir, modelName, loadModel, epochs, batches, 
     # 
     dic, settings = SDEC.LoadConf(conf)
     # 
-    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, True, True)
+    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, 'tanh', True)
     # 
     test = np.array(test)
 

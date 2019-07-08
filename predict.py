@@ -23,7 +23,7 @@ def PredictSingle(X, modelDir, modelName):
     # 
     dic, settings = SDEC.LoadConf(conf)
     #
-    test = SDEC.GetAllSeqCount(X, dic, settings.resolution)
+    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, 'tanh', True)
     # 
     test = np.array(test)
     #
@@ -97,7 +97,7 @@ def predict(dataPath, the_file, modelDir, modelName):
     # 
     dic, settings = SDEC.LoadConf(conf)
     #
-    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, True, True)
+    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, 'tanh', True)
     # 
     test = np.array(test)
     #
@@ -162,7 +162,9 @@ def predict(dataPath, the_file, modelDir, modelName):
         Comm(f'Steal Recall: {rec}% ({round(len(X)*rec/100)}/{len(X)})')
         print("Recall;\nOut of all the actual 'steals' within the dataset, how many of those were correctly predicted?")
 
-        with open('data/log.tsv','a+') as f:
-            f.write(f'{st}\t{modelName}\tInp Size: {len(dic)}\tResolution: {res}\tTotal Epochs: {ep}\tTest Data: {the_file}\tSamples: {len(predictions)}\tAcc: {acc}\tPrec: {prec}\tRec: {rec}\tTrained On: {mc.trainingData}\n')
-
+        try:
+            with open(f'{dataPath}/log.tsv','a+') as f:
+                f.write(f'{st}\t{modelName}\tInp Size: {len(dic)}\tResolution: {res}\tTotal Epochs: {ep}\tTest Data: {the_file}\tSamples: {len(predictions)}\tAcc: {acc}\tPrec: {prec}\tRec: {rec}\tTrained On: {mc.trainingData}\n')
+        except:
+            Comm(f'No Log file found @ {dataPath}/log.tsv')
     Comm("END")
