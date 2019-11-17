@@ -1,4 +1,4 @@
-# S-DEC
+# S-DEC v0.1.2
 # Sequence-Domain Encompassed Correlations
 
 # TO FIX THE ERROR, I HAVE TO MAP EVERY POSSIBLE CORRELATION, NOT JUST WHAT APPEARS IN THE TRAINING DATA! YIKES!
@@ -6,7 +6,7 @@
 def Comm(msg):
     print(f"\n{'~'*20} {msg} {'~'*20}\n")
 
-def CreateSeqDomainDictionary(data, model_dir, resolution):
+def CreateSeqDomainDictionary(data, resolution, model_dir="SDEC_Model", useUnknownChar=True):
     '''
     This will scan an entire data file & will document every possible sequence in the file & store it into a dictionary that can then be used as an index for inputs to the NN
     '''
@@ -43,10 +43,6 @@ def CreateSeqDomainDictionary(data, model_dir, resolution):
     # Then check to see if the min resolution is greater than the max resolution, if so then clip it to == the max 
     resolution[0] = resolution[1] if resolution[0] > resolution[1] else resolution[0]
 
-
-    # Our current resolution we are looking at == the min resolution
-    resLoc = resolution[0]
-
     # 
     for o in data:
         maxSeqLen = StoreHighestValue(maxSeqLen, len(o))
@@ -60,33 +56,32 @@ def CreateSeqDomainDictionary(data, model_dir, resolution):
     elements = list(OrderedDict.fromkeys(elements))
 
     # 
-    ret = GetResInps(resolution, elements)
-    
+    ret = GetResInps(resolution, elements, useUnknownChar)
+
     # Create our dictionary
     dic = dict(zip(ret,range(len(ret))))
 
-    ret = f'{resolution[0]}\t{resolution[1]}\n'
+    ret = f'{"".join(elements)}\n{resolution[0]}\t{resolution[1]}\n'
 
     # 
     for i in dic:
         ret += f'{i}:{dic[i]}\t'
 
     # 
-    with open(conf, 'w') as f:
+    with open(conf, 'w', encoding="utf8") as f:
         f.write(ret)
 
     Comm(f'Res: [{resolution[0]},{resolution[1]}] ~ Inps: {len(dic)}')
-    Comm(f'SEQUENCE DOMAIN SAVED IN /CONFIG!')
+    Comm(f'SEQUENCE DOMAIN SAVED IN {model_dir}/CONFIG!')
     return dic
 
-def GetResInps(res, el):
+def GetResInps(res, el, unknownChar=True):
     ret = []
     resLoc = res[0]
-    ttt = ""
-    app = []
 
-    # We need to add our unknown element, something that shouldn't be used in most datasets. NULL character of 0 should do fine :D
-    el.append(chr(0))
+    if unknownChar:
+        # We need to add a NULL to act as our unknown element, because a NULL is a char that shouldn't be used in most datasets, we will be using this as our "UNKNOWN CHARACTER" element. NULL character of 0 should do fine :D
+        el.append(chr(0))
 
     while resLoc <= res[1]:
         # This will add every element to every element in the domain, creating every possible correlation with a resolution of 2 
@@ -168,12 +163,12 @@ def CreateCounter(dic):
 
     return counter
 
-def GetSeqCount(seq, seqDictionary, resolution, squash, bare):
+def GetSeqCount(el, seq, seqDictionary, resolution, squash, bare):
     import math
     '''
     Sequence Domain Dictionary
     '''
-    
+
     # try this, if it returns an exception, we can properly communicate what we think went wrong to the user
     try:
         # Import libs
@@ -233,29 +228,30 @@ def LoadConf(file):
     '''
     seq = {}
 
-    try:
-        with open(f"{file}") as f:
-            load = f.read().split('\n')
+    # try:
+    with open(f"{file}", encoding='utf8') as f:
+        load = f.read().split('\n')
 
-            conf = load[0]
-            dic = load[1]
+        el = load[0]
+        conf = load[1]
+        dic = load[2]
 
-        dic = dic[:-1]
-        dic = dic.split('\t')
+    dic = dic[:-1]
+    dic = dic.split('\t')
 
-        for line in dic:
-            (key, val) = line.split(':')
-            seq[key] = int(val)
+    for line in dic:
+        (key, val) = line.split(':')
+        seq[key] = int(val)
 
-        Comm(f'SUCCESSFULLY LOADED SEQ CONFIG @ {file}!')
+    Comm(f'SUCCESSFULLY LOADED SEQ CONFIG @ {file}!')
 
-        return seq, LoadSettings(conf)
-    except:
-        Comm(f'FILE @ {file} DOES NOT EXIST OR CONFIG FILE IS CORRUPTED!')
+    return el, seq, LoadSettings(conf)
+    # except:
+    #     Comm(f'FILE @ {file} DOES NOT EXIST OR CONFIG FILE IS CORRUPTED!')
 
-        return None
+    #     return None
 
-def GetAllSeqCount(data, dic, res, squash, bare):
+def GetAllSeqCount(el, data, dic, res, squash='tanh', bare=True):
 
     ret = []
 
@@ -265,7 +261,7 @@ def GetAllSeqCount(data, dic, res, squash, bare):
 
     # 
     for d in data:
-        ret.append(GetSeqCount(d,counter, res, squash, bare))
+        ret.append(GetSeqCount(el, d,counter, res, squash, bare))
 
     return ret
 

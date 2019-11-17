@@ -10,7 +10,7 @@ parser.add_argument('-mn','--model_name', type=str, default='model',
                     help='the name you want your model to be saved as')
 parser.add_argument('-f','--file', type=str, default='train.txt',
                     help='the name you want your model to be saved as')
-parser.add_argument('-md','--models_dir', type=str, default='models',
+parser.add_argument('-md','--models_dir', type=str, default='SDEC_Model',
                     help='the location you want your models to be saved in')
 parser.add_argument('-dd','--data_dir', type=str, default='data',
                     help='the location containing your data')

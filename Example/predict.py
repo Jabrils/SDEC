@@ -1,5 +1,8 @@
 
 def PredictSingle(X, modelDir, modelName):
+    import sys
+    sys.path.append("..")
+    
     import SDEC
     from SDEC import Comm
 
@@ -19,15 +22,13 @@ def PredictSingle(X, modelDir, modelName):
     mConf = mConf.split('\n')
 
     # 
-    find = []
-    # 
-    dic, settings = SDEC.LoadConf(conf)
+    el, dic, settings = SDEC.LoadConf(conf)
     #
-    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, 'tanh', True)
+    test = SDEC.GetAllSeqCount(el, X, dic, settings.resolution)
     # 
     test = np.array(test)
     #
-    mc = SDEC.LoadModelConfig(f"{modelDir}/{modelName}/conf.mc")
+    # mc = SDEC.LoadModelConfig(f"{modelDir}/{modelName}/conf.mc")
 
     Comm(f"RES: {settings.resolution} ~ INP: {len(test[0])}")
 
@@ -51,6 +52,9 @@ def PredictSingle(X, modelDir, modelName):
     return int(round(predictions[0][0]))
 
 def predict(dataPath, the_file, modelDir, modelName):
+    import sys
+    sys.path.append("..")
+   
     import SDEC
     from SDEC import Comm
 
@@ -95,9 +99,9 @@ def predict(dataPath, the_file, modelDir, modelName):
             hasLabel = True
 
     # 
-    dic, settings = SDEC.LoadConf(conf)
+    el, dic, settings = SDEC.LoadConf(conf)
     #
-    test = SDEC.GetAllSeqCount(X, dic, settings.resolution, 'tanh', True)
+    test = SDEC.GetAllSeqCount(el, X, dic, settings.resolution)
     # 
     test = np.array(test)
     #
