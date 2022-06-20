@@ -5,9 +5,9 @@
 - Yo! sorry this is currently a mess. SDEC was created in response to a challenge from @MarkRober to figure out some sequential steal encodings. I was really just running & gunning under a deadline so a lot of code here is ugly & confusing, but ill be updating this rep from here on out.
 
 ## So What is SDEC?
-**So SDEC stands for Sequence-Domain Encompassed Correlations, & it's purpose is to take the entire domain of a given series of seqences, & encode it's encompassed correlations. This is done by defining what's called a "resolution" to limit how many correlations you want the your model to learn from.**
+**So SDEC stands for Sequence-Domain Encompassed Correlations, & it's purpose is to take the entire domain of a given series of sequences, & encode it's encompassed correlations. This is done by defining what's called a "resolution" to limit how many correlations you want the your model to learn from.**
 
-*At the moment, this idea is a bit clunky & not yet full proof to be a useful contribution to the machine learning space, but I will continue to develop, test, & improve this implimentation over time.*
+*At the moment, this idea is a bit clunky & not yet full proof to be a useful contribution to the machine learning space, but I will continue to develop, test, & improve this implementation over time.*
 
 ## What you will need:
 |Need|Description
@@ -78,7 +78,7 @@ optional arguments:
                         it off to you (default: False)
   -hom, --handoffmulti  add -hom if you want to the AI to plot a distr & hand
                         it off to you (default: False)
-  -i, --init            add -i if you want to initilize from some data
+  -i, --init            add -i if you want to initialize from some data
                         (default: False)
   -p, --predict         add -p if you want to predict (default: False)
   -lm, --load_model     add -lm if you want to load the model for further
@@ -108,7 +108,7 @@ optional arguments:
 |Classification on more than binary output
 |Adding an "Unknown" representation so unknown don't return errors.
 |Adding subprocesses to the [hub.py](hub.py) script for less confusion with -h
-|SDEC can process seqences that are shorter than the encoding (this might be for gendataset.py only lol)
+|SDEC can process sequences that are shorter than the encoding (this might be for gendataset.py only lol)
 |save `conf.mc` anytime you save a model
 |Clean up the scripts
 |Get Benchmarks
